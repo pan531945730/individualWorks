@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <link rel="shortcut icon" href="" type="image/x-icon">
+        <title>全屏和上传图片</title>
+    </head>
+<body>
+    <a href="javascript:void(0);" data-action="switch-fullscreen-mode">全屏</a>
+    <input type="file" value="" class="file-up">
+    <img src="">
+    
+    <script text="" src="../js/jquery-2.1.3.min.js"></script>
+    <script>
+        $(document).on('ready', function() {
+
+        }).on('change', '.file-up', function() {
+            var objUrl = getObjectURL(this.files[0]);
+            //console.log("objUrl = " + objUrl);
+            if (objUrl) {
+                $(this).siblings('img').attr("src", objUrl);
+            }
+
+            function getObjectURL(file) {
+                var url = null;
+                if (window.createObjectURL != undefined) { // basic
+                    url = window.createObjectURL(file);
+                } else if (window.URL != undefined) { // mozilla(firefox)
+                    url = window.URL.createObjectURL(file);
+                } else if (window.webkitURL != undefined) { // webkit or chrome
+                    url = window.webkitURL.createObjectURL(file);
+                }
+                return url;
+            }
+        }).on('click touchend', '[data-action=switch-fullscreen-mode]', function() {
+            document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement ? document.exitFullscreen ? document.exitFullscreen() : document.msExitFullscreen ? document.msExitFullscreen() : document.mozCancelFullScreen ? document.mozCancelFullScreen() : document.webkitExitFullscreen && document.webkitExitFullscreen() : document.documentElement.requestFullscreen ? document.documentElement.requestFullscreen() : document.documentElement.msRequestFullscreen ? document.documentElement.msRequestFullscreen() : document.documentElement.mozRequestFullScreen ? document.documentElement.mozRequestFullScreen() : document.documentElement.webkitRequestFullscreen && document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT)
+        })
+    </script>
+</body>
+</html>
