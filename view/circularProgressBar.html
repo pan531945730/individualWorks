@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title>css3环形进度条</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no,minimal-ui"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="applicable-device" content="mobile">
+    <link rel="apple-touch-icon-precomposed" sizes="57x57" href="" />
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="" />
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="" />
+    <link rel="shortcut icon" href="" type="image/x-icon">
+</head>
+<style type="text/css">
+    .circle {
+        width: 60px;
+        height: 60px;
+        position: relative;
+        border-radius: 100%;
+        background: #ff5959;
+    }
+    .pie_left, .pie_right {
+        width:60px; 
+        height:60px;
+        position: absolute;
+        top: 0;left: 0;
+    }
+    .left, .right {
+        width:60px; 
+        height:60px;
+        background:#e5e5e5;
+        border-radius: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        box-shadow: 0px 0px 2px 2px #fff;
+    }
+    .pie_right, .right {
+        clip:rect(0,auto,auto,30px);
+    }
+    .pie_left, .left {
+        clip:rect(0,30px,auto,0);
+    }
+    .mask {
+        display: inline-block;
+        width: 36px;
+        height: 36px;
+        padding: 9px;
+        line-height: 18px;
+        border-radius: 100%;
+        left: 3px;
+        top: 3px;
+        background: #fff;
+        position: absolute;
+        text-align: center;
+        color: #ff5959;
+    }
+    .mask em{
+        font-style: normal;
+    }
+</style>
+<body>
+    <div class="circle">
+        <div class="pie_left">
+            <div class="left" style="transform: rotate(176.4deg);"></div>
+        </div>
+        <div class="pie_right">
+            <div class="right" style="transform: rotate(180deg);"></div>
+        </div>
+        <div class="mask"><em>89</em>%<br>可购</div>
+    </div>
+        
+    <script type="text/javascript" src="../js/zepto.min.js"></script>
+    <script type="text/javascript">
+
+        drawCir('.circle');
+        //绘制可购百分比
+        function drawCir(v){
+            var v = $(v),
+                num = parseInt(v.find('em').html());
+            
+            v.find('em').html(num);
+            num = num * 3.6;
+            if(num<=180){
+              v.find('.right').css('-webkit-transform','rotate('+num+'deg)');
+            }else{
+              v.find('.right').css('-webkit-transform','rotate(180deg)');
+              v.find('.left').css('-webkit-transform','rotate(' + (num - 180) + 'deg)');
+            }
+        }
+    </script>
+
+</body>
+</html>
