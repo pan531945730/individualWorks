@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>面试题</title>
+</head>
+<body>
+<!-- http://www.kancloud.cn/jikeytang/qq/81143 -->
+    行内元素有哪些？块级元素有哪些？ 空(void)元素有那些？
+        首先：CSS规范规定，每个元素都有display属性，确定该元素的类型，每个元素都有默认的display值，如div的display默认值为“block”，则为“块级”元素；span默认display属性值为“inline”，是“行内”元素。
+
+        （1）行内元素有：a b span img input select strong（强调的语气）
+        （2）块级元素有：div ul ol li dl dt dd h1 h2 h3 h4…p
+
+        （3）常见的空元素：
+            <br> <hr> <img> <input> <link> <meta>
+            鲜为人知的是：
+            <area> <base> <col> <command> <embed> <keygen> <param> <source> <track> <wbr>
+    一、如下字体颜色是什么并说明原因：b
+    .a{
+        color: #fff;
+    }
+    .b{
+        color: #ff0000;
+    }
+    <p class="b a">字体颜色</p>
+
+
+
+    二、CSS 哪些属性默认会继承, 哪些不会继承?
+
+    不可继承的：display、margin、border、padding、background、height、min-height、max-height、width、min-width、max-width、overflow、position、left、right、top、bottom、z-index、float、clear、table-layout、vertical-align、page-break-after、page-bread-before和unicode-bidi。
+    所有元素可继承：visibility和cursor。
+    内联元素可继承：letter-spacing、word-spacing、white-space、line-height、color、font、font-family、font-size、font-style、font-variant、font-weight、text-decoration、text-transform、direction。
+    终端块状元素可继承：text-indent和text-align。
+    列表元素可继承：list-style、list-style-type、list-style-position、list-style-image。
+
+    三、实现块A垂直水平居中于B块中：
+    1）块A定高定宽
+
+
+    2)块A定高
+
+
+    3）块A不定宽不定高
+
+
+
+
+    四、输出为：2
+        var a = 1;
+        Math.abs(~a)
+
+
+    五：如下会先输出什么并说明原因：
+    $(function(){
+        $.ajax({
+            url : '',
+            type : '',
+            success : function(){
+                alert('aaa')
+            }
+        })
+    });
+    (function(){
+        $.ajax({
+            url : '',
+            type : '',
+            success : function(){
+                alert('bbbbbb')
+            }
+        })
+    })();
+    或
+    (function(){
+        $(function(){
+            $.ajax({
+                url : '',
+                type : '',
+                success : function(){
+                    alert('aaa')
+                }
+            })
+        });
+        $.ajax({
+            url : '',
+            type : '',
+            success : function(){
+                alert('bbbbbb')
+            }
+        })
+    })();
+
+    十六、给字符串扩展一个方法，实现将一个字符串自身重复N次
+    如console.log('hello'.repeatify(3)); 输出为：hellohellohello
+
+    String.prototype.repeatify = String.prototype.repeatify || function(times) {
+       var str = '';
+       for (var i = 0; i < times; i++) {
+          str += this;
+       }
+       return str;
+    };
+</body>
+</html>

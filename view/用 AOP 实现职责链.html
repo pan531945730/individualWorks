@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>用 AOP 实现职责链</title>
+</head>
+<body>
+    <script>
+    var order500 = function( orderType, pay, stock ){
+        if ( orderType === 1 && pay === true ){
+            console.log( '500 元定金预购，得到 100 优惠券' );
+        }else{
+            return 'nextSuccessor'; // 我不知道下一个节点是谁，反正把请求往后面传递
+        }
+    };
+    var order200 = function( orderType, pay, stock ){
+        if ( orderType === 2 && pay === true ){
+            console.log( '200 元定金预购，得到 50 优惠券' );
+        }else{
+            return 'nextSuccessor'; // 我不知道下一个节点是谁，反正把请求往后面传递
+        }
+    };
+    var orderNormal = function( orderType, pay, stock ){
+        if ( stock > 0 ){
+            console.log( '普通购买，无优惠券' );
+        }else{
+            console.log( '手机库存不足' );
+        }
+    };
+
+    Function.prototype.after = function( fn ){
+        var self = this;
+        return function(){
+            var ret = self.apply( this, arguments );
+            if ( ret === 'nextSuccessor' ){
+                return fn.apply( this, arguments );
+            }
+            return ret;
+        }
+    };
+    var order = order500.after( order200 ).after( orderNormal );
+
+    /*var after = function(fn,afterfn){
+        return function(){
+            var ret = fn.apply(this,arguments);
+            if(ret === 'nextSuccessor'){
+                return afterfn.apply(this,arguments);
+            }
+            return ret;
+        }
+    }
+    var order = after(after(order500,order200),orderNormal);*/
+    
+    order( 1, true, 500 ); // 输出：500 元定金预购，得到 100 优惠券
+    order( 2, true, 500 ); // 输出：200 元定金预购，得到 50 优惠券
+    order( 1, false, 500 ); // 输出：普通购买，无优惠券
+
+    /*var before = function( fn, beforefn ){
+        return function(){
+            beforefn.apply( this, arguments );
+            return fn.apply( this, arguments );
+        }
+    }
+    var a = before(
+        function(){alert (3)},
+        function(){alert (2)}
+    );
+    a = before( a, function(){alert (1);} );
+    a(); */ 
+
+    Function.prototype.before = function(beforefn){
+        var _self = this;
+        return function(){
+            beforefn.apply(this,arguments);
+            return _self.apply(this,arguments);
+        }
+    }
+    var func = function( param ){
+        console.log( param ); // 输出： {a: "a", b: "b"}
+    }
+    func = func.before( function( param ){
+        param.b = 'b';
+    });
+    func( {a: 'a'} ); 
+
+
+    Function.prototype.before01 = function( beforefn ){
+     var __self = this; // 保存原函数的引用
+     return function(){ // 返回包含了原函数和新函数的"代理"函数
+     beforefn.apply( this, arguments ); // 执行新函数，修正 this
+     return __self.apply( this, arguments ); // 执行原函数
+     }
+    };
+    Function.prototype.after01 = function( afterfn ){
+     var __self = this;
+     return function(){
+     var ret = __self.apply( this, arguments );
+     afterfn.apply( this, arguments );
+     return ret;
+     }
+    }; 
+    var func01 = function(){
+     console.log( 2 );
+    };
+    func01 = func01.before01(function(){
+     console.log( 1 );
+    }).after01(function(){
+     console.log( 3 );
+    });
+    func01(); 
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Every and then some</title>
+</head>
+<body>
+    <script>
+        function every(datas,query){
+          for(key in datas){
+            if(!query(datas[key]))
+              return false;
+          }
+          return true;
+        }
+        function some(datas,query){
+          for(key in datas){
+            if(query(datas[key]))
+              return true;
+          }
+          return false;
+        }
+        console.log(every([NaN, NaN, NaN], isNaN));
+        // → true
+        console.log(every([NaN, NaN, 4], isNaN));
+        // → false
+        console.log(some([NaN, 3, 4], isNaN));
+        // → true
+        console.log(some([2, 3, 4], isNaN));
+        // → false
+    </script>
+</body>
+</html>

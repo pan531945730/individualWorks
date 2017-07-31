@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>累加当前时间</title>
+</head>
+<body>
+    <script>
+        var nowTime = +new Date();
+        function addNowTime() {
+            nowTime = nowTime || +new Date();
+            setTimeout(function() {
+                nowTime += 1000;
+                addNowTime();
+                console.log(nowTime);
+            }, 1000);
+        }
+        addNowTime();
+    </script>
+</body>
+</html>

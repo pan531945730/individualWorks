@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mother-child age difference</title>
+</head>
+<body>
+    <script type="text/javascript" src="../js/ancestry.js"></script>
+    <script>
+        var ancestry = ANCESTRY_FILE;
+        function plus(a, b) { return a + b; }
+          return array.reduce(plus) / array.length;
+        }
+
+        var byName = {};
+        ancestry.forEach(function(person) {
+          byName[person.name] = person;
+        });
+
+        // Your code here.
+        function hasKnownMother(person){
+            return byName[person.mother] != undefined;
+        };
+        function difference(person){
+            return person.born - byName[person.mother].born;
+        };
+        console.log(average(ancestry.filter(hasKnownMother).map(difference)));
+    </script>
+</body>
+</html>

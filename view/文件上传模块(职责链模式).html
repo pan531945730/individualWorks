@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>文件上传模块(职责链模式)</title>
+</head>
+<body>
+<script text="" src="../js/jquery-2.1.3.min.js"></script>
+    <script>
+        function supportFlash () {
+            var hasFlash = 0;         //是否安装了flash  
+            if (navigator.plugins && navigator.plugins.length > 0) {  
+                var swf = navigator.plugins["Shockwave Flash"];  
+                if (swf) {  
+                    return true; 
+                }  
+            } 
+        }
+        var getActiveUploadObj = function(){
+            try{
+                return new ActiveXObject("TXFTNActiveX.FTNUpload"); // IE 上传控件
+            }catch(e){
+                return 'nextSuccessor' ;
+            }
+        };
+        var getFlashUploadObj = function(){
+            if ( supportFlash() ){
+                var str = '<object type="application/x-shockwave-flash"></object>';
+                return $( str ).appendTo( $('body') );
+            }
+            return 'nextSuccessor' ;
+        };
+        var getFormUpladObj = function(){
+            return $( '<form><input name="file" type="file"/></form>' ).appendTo( $('body') );
+        };
+        Function.prototype.after = function( fn ){
+            var self = this;
+            return function(){
+                var ret = self.apply( this, arguments );
+                if ( ret === 'nextSuccessor' ){
+                    return fn.apply( this, arguments );
+                }
+                return ret;
+            }
+        };
+        var getUploadObj = getActiveUploadObj.after( getFlashUploadObj ).after( getFormUpladObj );
+        console.log( getUploadObj() ); 
+    </script>
+</body>
+</html>

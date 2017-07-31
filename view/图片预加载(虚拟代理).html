@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>虚拟代理实现图片预加载</title>
+</head>
+<body>
+    <script>
+    var myImage = (function(){
+        var imgNode = document.createElement( 'img' );
+        document.body.appendChild( imgNode );
+        return {
+            setSrc: function( src ){
+                imgNode.src = src;
+            }
+        }
+    })();
+    var proxyImage = (function(){
+        var img = new Image;
+        img.onload = function(){
+            myImage.setSrc( this.src );
+        }
+        return {
+            setSrc: function( src ){
+                myImage.setSrc( '../img/11.png' );
+                img.src = src;
+            }
+        }
+    })();
+
+
+    proxyImage.setSrc( '../img/20150108170945527.png' ); 
+
+    //myImage.setSrc( '../img/20150108170945527.png' );
+    
+    //不用代理的预加载图片函数实现如下：
+    var MyImage = (function(){
+        var imgNode = document.createElement( 'img' );
+        document.body.appendChild( imgNode );
+        var img = new Image;
+        img.onload = function(){
+            imgNode.src = img.src;
+        };
+        return {
+            setSrc: function( src ){
+                imgNode.src = 'file:// /C:/Users/svenzeng/Desktop/loading.gif';
+                img.src = src;
+            }
+        }
+    })();
+    MyImage.setSrc( 'http:// imgcache.qq.com/music/photo/k/000GGDys0yA0Nk.jpg' ); 
+
+    </script>
+</body>
+</html>
